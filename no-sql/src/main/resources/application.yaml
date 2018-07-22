@@ -1,0 +1,8 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://username:password@localhost:27017/test
+  redis:
+    host: localhost
+    port: 6379
+    password: password

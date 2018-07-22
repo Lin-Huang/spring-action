@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<script type="application/javascript" src="http://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+<!--<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>-->
+<script>
+    var socket = new WebSocket("ws://localhost:8080/marcopolo");
+    var stomp = Stomp.over(socket);
+    stomp.connect('', '', function (frame) {
+        console.log("connected");
+    });
+
+    function send() {
+        var playload = JSON.stringify({'message': 'Marco!'});
+        stomp.send("/app/marco", {}, playload);
+    }
+
+    function subscribe() {
+        stomp.subscribe("/topic/notice", function (event) {
+            var json = JSON.parse(event.body);
+            console.log(json);
+        })
+    }
+
+    function user() {
+        stomp.subscribe("/user/1/message", function (event) {
+            var json = JSON.parse(event.body);
+            console.log(json);
+        })
+    }
+
+</script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button type="button" onclick="send()">发送消息</button>
+    <button type="button" onclick="subscribe()">订阅</button>
+    <button type="button" onclick="user()">监听</button>
+</body>
+</html>
